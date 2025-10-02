@@ -1,0 +1,88 @@
+<?php
+require_once "connection.php";
+
+class OrderDetail {
+    public $idchitiet;
+    public $iddonhang;
+    public $masp;        // ID sản phẩm (foreign key đến sanpham.ID)
+    public $soluongban;
+    public $giaban;
+    public $ghichu;
+
+    function __construct($iddonhang, $masp, $soluongban, $giaban, $ghichu = null, $idchitiet = null) {
+        $this->idchitiet = $idchitiet;
+        $this->iddonhang = $iddonhang;
+        $this->masp      = $masp;
+        $this->soluongban = $soluongban;
+        $this->giaban    = $giaban;
+        $this->ghichu    = $ghichu;
+    }
+
+    // Thêm chi tiết đơn hàng
+    public function insert() {
+        $db = DB::getInstance();
+        $sql = "INSERT INTO chitietdonhang (IDDONHANG, ID, SOLUONGBAN, GIABAN, GHICHU)
+                VALUES (:iddonhang, :id, :soluong, :gia, :ghichu)";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            ':iddonhang' => $this->iddonhang,
+            ':id'        => $this->masp,   // dùng ID sản phẩm
+            ':soluong'   => $this->soluongban,
+            ':gia'       => $this->giaban,
+            ':ghichu'    => $this->ghichu
+        ]);
+    }
+
+public static function getByOrderId($orderId) {
+    $db = DB::getInstance();
+    $sql = "SELECT 
+                sp.ID AS masp, 
+                sp.TENSP AS tensp, 
+                ct.SOLUONGBAN AS soluongban, 
+                ct.GIABAN AS giaban,   
+                ct.GHICHU AS ghichu
+            FROM chitietdonhang ct
+            JOIN sanpham sp ON ct.ID = sp.ID
+            WHERE ct.IDDONHANG = :id";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([':id' => $orderId]);
+    $stmt->setFetchMode(PDO::FETCH_OBJ);
+    $rows = $stmt->fetchAll();
+
+    // ✅ Trả về map [masp => object]
+    $map = [];
+    foreach ($rows as $r) {
+        $map[(string)$r->masp] = $r;  // ép về string để tránh lệch kiểu
+    }
+    return $map;
+}
+
+    public static function deleteByOrderId($iddonhang) {
+        $db = DB::getInstance();
+        $sql = "DELETE FROM chitietdonhang WHERE IDDONHANG = :iddonhang";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([':iddonhang' => $iddonhang]);
+    }
+    public static function updateByOrderAndProduct($iddonhang, $masp, $soluong, $giaban, $ghichu) {
+    $db = DB::getInstance();
+    $sql = "UPDATE chitietdonhang
+            SET SOLUONGBAN = :soluong, GIABAN = :giaban, GHICHU = :ghichu
+            WHERE IDDONHANG = :iddonhang AND ID = :masp";
+    $stmt = $db->prepare($sql);
+    return $stmt->execute([
+        ':soluong'   => $soluong,
+        ':giaban'    => $giaban,
+        ':ghichu'    => $ghichu,
+        ':iddonhang' => $iddonhang,
+        ':masp'      => $masp
+    ]);
+}
+
+
+    public static function deleteById($idchitiet) {
+        $db = DB::getInstance();
+        $sql = "DELETE FROM chitietdonhang WHERE IDCHITIET = :id";
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([':id' => $idchitiet]);
+    }
+}
