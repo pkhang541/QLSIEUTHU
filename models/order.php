@@ -7,7 +7,7 @@ class Order {
     public $makh;
     public $trangthai;
     public $ngaylap;
-    public $masp_list; // danh sách sản phẩm trong đơn
+    public $masp_list; 
 
     function __construct($iddonhang, $manv, $makh,$trangthai, $ngaylap) {
         $this->iddonhang = $iddonhang;
@@ -22,7 +22,7 @@ class Order {
     $sql = "
         SELECT o.*, 
                GROUP_CONCAT(p.TENSP SEPARATOR ', ') AS tensp_list,
-               nv.HOTENNV AS tennv,
+               nv.HOTENNV AS hotennv,
                kh.TENKH AS tenkh
         FROM donhang o
         LEFT JOIN chitietdonhang d ON o.IDDONHANG = d.IDDONHANG
@@ -43,14 +43,15 @@ class Order {
             $row['NGAYLAP']
         );
         $order->tensp_list = $row['tensp_list'] ?? '';
-        $order->tennv = $row['tennv'] ?? '';
+        $order->hotennv = $row['hotennv'] ?? '';
         $order->tenkh = $row['tenkh'] ?? '';
         $orders[] = $order;
     }
     return $orders;
 }
 
-public static function searchById($id) {
+public static function tim($keyword, $type = 'id')
+{
     $db = DB::getInstance();
     $sql = "
         SELECT o.*, 
@@ -62,16 +63,46 @@ public static function searchById($id) {
         LEFT JOIN sanpham p ON d.ID = p.ID
         LEFT JOIN nhanvien nv ON o.MANV = nv.MANV
         LEFT JOIN khachhang kh ON o.MAKH = kh.MAKH
-        WHERE o.IDDONHANG = :id
-        GROUP BY o.IDDONHANG
     ";
+    switch ($type) {
+        case 'id':
+            $sql .= " WHERE o.IDDONHANG = :kw";
+            $params = [':kw' => $keyword];
+            break;
+
+        case 'nhanvien':
+            $sql .= " WHERE nv.HOTENNV LIKE :kw";
+            $params = [':kw' => "%$keyword%"];
+            break;
+
+        case 'khachhang':
+            $sql .= " WHERE kh.TENKH LIKE :kw";
+            $params = [':kw' => "%$keyword%"];
+            break;
+
+        case 'trangthai':
+            $sql .= " WHERE o.TRANGTHAI LIKE :kw";
+            $params = [':kw' => "%$keyword%"];
+            break;
+
+        case 'ngaylap':
+            $sql .= " WHERE o.NGAYLAP LIKE :kw";
+            $params = [':kw' => "%$keyword%"];
+            break;
+
+        default:
+            $sql .= " WHERE o.IDDONHANG LIKE :kw";
+            $params = [':kw' => "%$keyword%"];
+    }
+
+    $sql .= " GROUP BY o.IDDONHANG";
+
     $stmt = $db->prepare($sql);
-    $stmt->execute([':id' => $id]);
-    
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt->execute($params);
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
     $orders = [];
-    if ($row) {
+    foreach ($stmt as $row) {
         $order = new Order(
             $row['IDDONHANG'],
             $row['MANV'],
@@ -80,14 +111,13 @@ public static function searchById($id) {
             $row['NGAYLAP']
         );
         $order->tensp_list = $row['tensp_list'] ?? '';
-        $order->hotennv      = $row['hotennv'] ?? '';
-        $order->tenkh      = $row['tenkh'] ?? '';
+        $order->hotennv = $row['hotennv'] ?? '';
+        $order->tenkh = $row['tenkh'] ?? '';
         $orders[] = $order;
     }
 
     return $orders;
 }
-
 
     public static function getById($id) {
         $db = DB::getInstance();
@@ -126,12 +156,9 @@ public static function searchById($id) {
         ]);
     }
 
- public static function update($id, $manv, $makh, $trangthai, $ngaylap, $products) {
+public static function update($id, $manv, $makh, $trangthai, $ngaylap) {
     $db = DB::getInstance();
     try {
-        $db->beginTransaction();
-
-        // Cập nhật thông tin đơn hàng
         $sql = "UPDATE donhang
                 SET MANV = :manv, MAKH = :makh, TRANGTHAI = :trangthai, NGAYLAP = :ngaylap
                 WHERE IDDONHANG = :id";
@@ -143,27 +170,14 @@ public static function searchById($id) {
             ':trangthai' => $trangthai,
             ':ngaylap' => $ngaylap
         ]);
-
-        // Xóa sản phẩm cũ
-        $stmt = $db->prepare("DELETE FROM chitietdonhang WHERE IDDONHANG = :id");
-        $stmt->execute([':id' => $id]);
-
-        // Thêm lại sản phẩm mới
-        $stmt = $db->prepare("INSERT INTO chitietdonhang (IDDONHANG, ID) VALUES (:iddonhang, :masp)");
-        foreach ($products as $masp) {
-            $stmt->execute([
-                ':iddonhang' => $id,
-                ':masp' => $masp
-            ]);
-        }
-
-        $db->commit();
         return true;
     } catch (Exception $e) {
-        $db->rollBack();
+        error_log("Update order error: " . $e->getMessage());
         return false;
     }
 }
+
+
       
     public static function delete($iddonhang) {
         $db = DB::getInstance();

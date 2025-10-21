@@ -58,19 +58,14 @@ class EmployeeController extends Basecontroller {
 
 public function tim()
 {
-    // giả sử form gửi phương thức POST với input name="id"
-    if (isset($_POST['id']) && trim($_POST['id']) !== '') {
-        $keyword = trim($_POST['id']);
-        $list = Employee::search($keyword);
+     if (isset($_GET['keyword']) && trim($_GET['keyword']) !== '') {
+        $keyword = trim($_GET['keyword']);
+        $type = isset($_GET['type']) ? $_GET['type'] : 'ten';
+        $list = Employee::search($keyword, $type);
         $this->render('employee_list', ['dsemployee' => $list]);
     } else {
         $this->hienthiemployee();
     }
 }
-
-    public function error()
-    {
-        $this->render('baoloi');
-    }
 }
 ?>

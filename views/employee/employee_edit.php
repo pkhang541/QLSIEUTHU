@@ -7,7 +7,7 @@
   } ?>
 
   <?php if (isset($employee)) { ?>
-    <form method="POST" action="index.php?controller=employee&action=hienthiedit">
+    <form method="POST" id="employeeform" action="index.php?controller=employee&action=hienthiedit">
       <!-- Ẩn MANV -->
       <input type="hidden" name="MANV" value="<?php echo htmlspecialchars($employee->manv); ?>">
 
@@ -29,7 +29,7 @@
                value="<?php echo htmlspecialchars($employee->sdt); ?>">
       </div>
 
-      <button type="submit" class="btn btn-primary">Cập nhật</button>
+       <button type="button" class="btn btn-success" onclick="kiemtraNV()">Cập nhật</button>
       <a href="index.php?controller=employee&action=hienthiemployee" class="btn btn-secondary">Hủy</a>
     </form>
   <?php } else { ?>

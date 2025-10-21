@@ -4,7 +4,7 @@ require_once "connection.php";
 class OrderDetail {
     public $idchitiet;
     public $iddonhang;
-    public $masp;        // ID sản phẩm (foreign key đến sanpham.ID)
+    public $masp;        
     public $soluongban;
     public $giaban;
     public $ghichu;
@@ -19,19 +19,54 @@ class OrderDetail {
     }
 
     // Thêm chi tiết đơn hàng
-    public function insert() {
-        $db = DB::getInstance();
-        $sql = "INSERT INTO chitietdonhang (IDDONHANG, ID, SOLUONGBAN, GIABAN, GHICHU)
-                VALUES (:iddonhang, :id, :soluong, :gia, :ghichu)";
-        $stmt = $db->prepare($sql);
-        return $stmt->execute([
-            ':iddonhang' => $this->iddonhang,
-            ':id'        => $this->masp,   // dùng ID sản phẩm
-            ':soluong'   => $this->soluongban,
-            ':gia'       => $this->giaban,
-            ':ghichu'    => $this->ghichu
-        ]);
+public function insert() {
+    $db = DB::getInstance();
+    $stmt = $db->prepare("
+        INSERT INTO chitietdonhang (IDDONHANG, ID, SOLUONGBAN, GIABAN, GHICHU) 
+        VALUES (?, ?, ?, ?, ?)
+    ");
+    return $stmt->execute([
+        $this->iddonhang,
+        $this->masp,
+        $this->soluongban,
+        $this->giaban,
+        $this->ghichu
+    ]);
+}
+public static function getOne($iddonhang, $masp)
+{
+    $db = DB::getInstance();
+    $sql = "SELECT * FROM chitietdonhang WHERE IDDONHANG = :iddonhang AND ID = :masp";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([
+        ':iddonhang' => $iddonhang,
+        ':masp' => $masp
+    ]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        return new OrderDetail(
+            $row['IDDONHANG'],
+            $row['ID'],
+            $row['SOLUONGBAN'],
+            $row['GIABAN'],
+            $row['GHICHU'],
+            $row['IDCHITIET'] ?? null
+        );
     }
+
+    return null;
+}
+public static function deleteOne($iddonhang, $masp) {
+    $db = DB::getInstance();
+    $sql = "DELETE FROM chitietdonhang WHERE IDDONHANG = :iddonhang AND ID = :masp";
+    $stmt = $db->prepare($sql);
+    return $stmt->execute([
+        ':iddonhang' => $iddonhang,
+        ':masp'      => $masp
+    ]);
+}
+
 
 public static function getByOrderId($orderId) {
     $db = DB::getInstance();
@@ -79,10 +114,6 @@ public static function getByOrderId($orderId) {
 }
 
 
-    public static function deleteById($idchitiet) {
-        $db = DB::getInstance();
-        $sql = "DELETE FROM chitietdonhang WHERE IDCHITIET = :id";
-        $stmt = $db->prepare($sql);
-        return $stmt->execute([':id' => $idchitiet]);
-    }
+    
 }
+?>

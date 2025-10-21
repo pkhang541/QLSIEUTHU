@@ -1,4 +1,5 @@
 <?php
+require_once 'connection.php';
 class Product
 {
     public $masp;
@@ -31,30 +32,7 @@ class Product
         }
         return $list;
     }
-    public static function countAll()
-{
-    $db = DB::getInstance();
-    $sql = "SELECT COUNT(*) as total FROM sanpham";
-    $stmt = $db->query($sql);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $row['total'];
-}
-public static function getTopSelling($limit = 5)
-{
-    $db = DB::getInstance();
-    $sql = "
-        SELECT sp.ID, sp.TENSP, SUM(ct.SOLUONGBAN) as tongban
-        FROM chitietdonhang ct
-        INNER JOIN sanpham sp ON sp.ID = ct.ID
-        GROUP BY sp.ID, sp.TENSP
-        ORDER BY tongban DESC
-        LIMIT :limit
-    ";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+
 public static function getFeaturedProducts($limit = 4)
 {
     $db = DB::getInstance();
@@ -121,29 +99,37 @@ public static function getFeaturedProducts($limit = 4)
         $stmt = $db->prepare($sql);
         return $stmt->execute([$masp]);
     }
-    public static function tim($keyword)
+    
+    public static function tim($keyword, $type = 'ten')
 {
     $db = DB::getInstance();
-    $sql = "SELECT * FROM sanpham 
-            WHERE TENSP LIKE :kw OR ID LIKE :kw";
-    $stmt = $db->prepare($sql);
-    $stmt->execute([':kw' => '%' . $keyword . '%']);
-    $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
+    if ($type === 'id') {
+        // Tìm chính xác theo mã sản phẩm
+        $sql = "SELECT * FROM sanpham WHERE ID = :kw";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([':kw' => $keyword]);
+    } else {
+        // Tìm gần đúng theo tên sản phẩm
+        $sql = "SELECT * FROM sanpham WHERE TENSP LIKE :kw";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([':kw' => '%' . $keyword . '%']);
+    }
+
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $list = [];
     foreach ($stmt as $item) {
         $list[] = new Product(
-            $item['ID'], 
-            $item['TENSP'], 
-            $item['HANSD'], 
-            $item['MOTA'], 
-            $item['HINHANH'], 
-            $item['QUYCACH'], 
+            $item['ID'],
+            $item['TENSP'],
+            $item['HANSD'],
+            $item['MOTA'],
+            $item['HINHANH'],
+            $item['QUYCACH'],
             $item['DONVT']
         );
     }
     return $list;
 }
-
 }
 ?>

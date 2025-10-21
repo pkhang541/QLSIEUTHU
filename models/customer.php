@@ -33,6 +33,7 @@ class Customer
         return $list;
     }
 
+
 public static function addCustomer($tenkh, $diachi, $sdt)
 {
     try {
@@ -89,19 +90,58 @@ public static function addCustomer($tenkh, $diachi, $sdt)
         $stmt = $db->prepare($sql);
         return $stmt->execute([$id]);
     }
-public static function tim($keyword)
+public static function tim($keyword, $type)
 {
     $db = DB::getInstance();
-    $sql = "SELECT * FROM khachhang 
-            WHERE MAKH LIKE :kw OR TENKH LIKE :kw";
-    $stmt = $db->prepare($sql);
-    $stmt->execute([':kw' => '%' . $keyword . '%']);
-
     $list = [];
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $list[] = new Customer($row['MAKH'], $row['TENKH'], $row['DC'], $row['SDT']);
+
+    switch ($type) {
+        case 'ma':
+            $sql = "SELECT * FROM khachhang WHERE MAKH = :kw";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':kw', $keyword, PDO::PARAM_STR);
+            break;
+
+        case 'ten':
+            $sql = "SELECT * FROM khachhang WHERE TENKH LIKE :kw";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':kw', '%' . $keyword . '%', PDO::PARAM_STR);
+            break;
+
+        case 'diachi':
+            $sql = "SELECT * FROM khachhang WHERE DC LIKE :kw";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':kw', '%' . $keyword . '%', PDO::PARAM_STR);
+            break;
+
+        case 'sdt':
+            $sql = "SELECT * FROM khachhang WHERE SDT = :kw";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':kw', $keyword, PDO::PARAM_STR);
+            break;
+
+        default:
+            // nếu không chọn gì thì tìm gần đúng theo tên
+            $sql = "SELECT * FROM khachhang WHERE TENKH LIKE :kw";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':kw', '%' . $keyword . '%', PDO::PARAM_STR);
+            break;
     }
+
+    $stmt->execute();
+
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $item) {
+        $list[] = new Customer(
+            $item['MAKH'],
+            $item['TENKH'],
+            $item['DC'],
+            $item['SDT']
+        );
+    }
+
     return $list;
 }
+
+
 }
 ?>

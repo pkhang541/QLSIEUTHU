@@ -27,7 +27,6 @@
              value="<?php echo isset($_POST['SDT']) ? htmlspecialchars($_POST['SDT']) : ''; ?>">
     </div>
 
-    <!-- Nút đổi thành button, gọi hàm kiểm tra -->
     <button type="button" class="btn btn-success" onclick="kiemtraKH()">Thêm khách hàng</button>
     <a href="index.php?controller=customer&action=hienthicustomer" class="btn btn-secondary">Hủy</a>
   </form>

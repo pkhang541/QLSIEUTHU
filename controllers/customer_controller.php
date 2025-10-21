@@ -70,16 +70,18 @@ class customerController extends Basecontroller
 
 public function tim()
 {
-    if (!empty($_GET['MAKH'])) {
-        $keyword = trim($_GET['MAKH']);
-        $dscustomer = Customer::tim($keyword);
+    $keyword = $_GET['keyword'] ?? ''; // lấy từ ô nhập
+    $type = $_GET['type'] ?? 'ten';    // lấy từ select
 
+    if (!empty($keyword)) {
+        $dscustomer = Customer::tim($keyword, $type);
         $data = ['dscustomer' => $dscustomer];
         $this->render('customer_list', $data);
     } else {
         $this->hienthicustomer();
     }
 }
+
 
 
 

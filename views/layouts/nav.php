@@ -90,13 +90,20 @@
             </ul>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="index.php?controller=thongke&action=thongke">Thông Kê</a>
+              <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="sanphamDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Thống Kê
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="sanphamDropdown">
+              <li><a class="dropdown-item" href="index.php?controller=thongke&action=thongke">Danh sách sản phẩm bán chạy </a></li>
+              <li><a class="dropdown-item" href="index.php?controller=thongke&action=nhanvienxuatsac">Danh sách nhân viên xuất sắc</a></li>
+              <li><a class="dropdown-item" href="index.php?controller=thongke&action=khachhangmuanhieu">Danh sách khách hàng mua nhiều</a></li>
+              <li><a class="dropdown-item" href="index.php?controller=thongke&action=doanhthutheothang">Doanh thu theo tháng</a></li>
+              <li><hr class="dropdown-divider"></li>
+            </ul>
           </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="lienhe.php">Liên hệ</a>
-          </li>
+          
         </ul>
       </div>
     </div>

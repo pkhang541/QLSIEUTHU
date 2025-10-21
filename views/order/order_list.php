@@ -1,21 +1,33 @@
 <h2 class="mb-4">Danh sách đơn hàng</h2>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <form method="GET" action="index.php" class="row mb-4">
-    <input type="hidden" name="controller" value="order">
-    <input type="hidden" name="action" value="tim">
-    <div class="col-auto">
-      <input type="text" name="ID" class="form-control" placeholder="Nhập ID " required>
-    </div>
-    <div class="col-auto">
-      <button type="submit" class="btn btn-primary">Tìm</button>
-    </div>
-  </form>
 <div class="mb-3">
-    <a href="index.php?controller=order&action=hienthiadd" class="btn btn-primary">
+    <a href="index.php?controller=order&action=hienthiadd" class="btn btn-success">
         <i class="bi bi-plus-lg"></i> Thêm đơn hàng
     </a>
 </div>
+<form method="GET" action="index.php" class="mb-3">
+  <input type="hidden" name="controller" value="order">
+  <input type="hidden" name="action" value="tim">
+
+  <div class="input-group d-flex align-items-center" style="max-width: 500px;">
+    <select name="type" class="form-select rounded-pill me-2" style="max-width: 160px; height: 38px;">
+      <option value="id" <?= (isset($_GET['type']) && $_GET['type'] == 'id') ? 'selected' : '' ?>>Mã đơn</option>
+      <option value="nhanvien" <?= (isset($_GET['type']) && $_GET['type'] == 'nhanvien') ? 'selected' : '' ?>>Nhân viên</option>
+      <option value="khachhang" <?= (isset($_GET['type']) && $_GET['type'] == 'khachhang') ? 'selected' : '' ?>>Khách hàng</option>
+      <option value="trangthai" <?= (isset($_GET['type']) && $_GET['type'] == 'trangthai') ? 'selected' : '' ?>>Trạng thái</option>
+      <option value="ngaylap" <?= (isset($_GET['type']) && $_GET['type'] == 'ngaylap') ? 'selected' : '' ?>>Ngày lập</option>
+    </select>
+
+    <input type="text" name="keyword" class="form-control rounded-pill me-2"
+           placeholder="Nhập nội dung tìm kiếm"
+           style="height: 38px;"
+           value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
+
+    <button class="btn btn-primary rounded-pill me-2 px-3" type="submit">Tìm</button>
+    <a href="index.php?controller=order&action=hienthiorder" class="btn btn-secondary rounded-pill px-3">Tất cả</a>
+  </div>
+</form>
+
 
 <?php if (!empty($error)): ?>
     <div class="alert alert-danger">
@@ -44,19 +56,22 @@
                         <td><?= $o->hotennv ?></td>
                         <td><?= $o->tenkh ?></td>
                         <td>
-                            <span class="badge <?= $o->trangthai == 'Hoàn thành' ? 'bg-success' : 'bg-warning' ?>">
-                                <?= $o->trangthai ?>
+                            <span class="badge <?= strtolower($o->trangthai) == 'hết hàng' ? 'bg-warning' : 'bg-success' ?>">
+                             <?= htmlspecialchars($o->trangthai) ?>
                             </span>
+
+
                         </td>
                         <td><?= $o->ngaylap ?></td>
                         <td><?= $o->tensp_list ?></td>
                         <td>
                             <a href="index.php?controller=order&action=hienthiedit&id=<?= $o->iddonhang ?>" class="btn btn-sm btn-info">Sửa</a>
-                            <a href="index.php?controller=order&action=hienthixoa&id=<?= $o->iddonhang ?>" 
+                            <a href="index.php?controller=order&action=xoa&id=<?= $o->iddonhang ?>" 
                                class="btn btn-sm btn-danger"
                                onclick="return confirm('Xóa đơn hàng?')">Xóa</a>
-                            <a href="index.php?controller=order&action=hienthiOrderDetails&id=<?= $o->iddonhang ?>" 
-                               class="btn btn-sm btn-secondary">Chi tiết</a>
+                           <a href="index.php?controller=details&action=hienthidetails&iddonhang=<?= $o->iddonhang ?>" 
+                            class="btn btn-sm btn-secondary">Chi tiết</a>
+
                         </td>
                     </tr>
                 <?php endforeach; ?>

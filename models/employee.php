@@ -89,19 +89,44 @@ class Employee
             return false;
         }
     }
-     public static function search($keyword) {
-        $db = DB::getInstance();
-        $sql = "SELECT * FROM nhanvien WHERE HOTENNV LIKE :kw OR MANV LIKE :kw";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([':kw' => '%' . $keyword . '%']);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public static function search($keyword, $type = 'ten')
+    {
+         $list = [];
+    $db = DB::getInstance();
 
-        $list = [];
-        foreach ($rows as $r) {
-            $list[] = new Employee($r['MANV'], $r['HOTENNV'], $r['EMAIL'], $r['SDT']);
-        }
-        return $list;
+    switch ($type) {
+        case 'ma':
+            $sql = "SELECT * FROM nhanvien WHERE MANV = :kw";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':kw', $keyword, PDO::PARAM_STR);
+            break;
+        case 'email':
+            $sql = "SELECT * FROM nhanvien WHERE EMAIL LIKE :kw";
+            $stmt = $db->prepare($sql);
+            $kw = "%" . $keyword . "%";
+            $stmt->bindParam(':kw', $kw, PDO::PARAM_STR);
+            break;
+        case 'sdt':
+            $sql = "SELECT * FROM nhanvien WHERE SDT = :kw";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':kw', $kw, PDO::PARAM_STR);
+            break;
+        default: // tìm theo tên
+            $sql = "SELECT * FROM nhanvien WHERE HOTENNV LIKE :kw";
+            $stmt = $db->prepare($sql);
+            $kw = "%" . $keyword . "%";
+            $stmt->bindParam(':kw', $kw, PDO::PARAM_STR);
     }
+
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($rows as $r) {
+        $list[] = new Employee($r['MANV'], $r['HOTENNV'], $r['EMAIL'], $r['SDT']);
+    }
+
+    return $list;
+}
     
 }
 ?>

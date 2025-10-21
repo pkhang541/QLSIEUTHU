@@ -1,20 +1,29 @@
 <div class="container mt-4">
     <h2>Danh sách nhân viên</h2>
-    <a href="index.php?controller=employee&action=hienthiadd" class="btn btn-success mb-3">+ Thêm nhân viên</a>
+    <a href="index.php?controller=employee&action=hienthiadd" class="btn btn-success mb-3"> Thêm nhân viên</a>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <form method="POST" action="index.php?controller=employee&action=tim" class="row mb-4">
-  <div class="col-auto">
-    <input 
-      type="text" 
-      id="id" 
-      name="id" 
-      class="form-control" 
-      placeholder="Nhập ID, tên">
-  </div>
-  <div class="col-auto">
-    <button type="submit" class="btn btn-primary">Tìm</button>
+    <form method="GET" action="index.php" class="mb-3">
+  <input type="hidden" name="controller" value="employee">
+  <input type="hidden" name="action" value="tim">
+
+  <div class="input-group d-flex align-items-center" style="max-width: 500px;">
+    <select name="type" class="form-select rounded-pill me-2" style="max-width: 140px; height: 38px;">
+      <option value="ma" <?= (isset($_GET['type']) && $_GET['type'] === 'ma') ? 'selected' : '' ?>>Mã NV</option>
+      <option value="ten" <?= (!isset($_GET['type']) || $_GET['type'] === 'ten') ? 'selected' : '' ?>>Tên NV</option>
+      <option value="email" <?= (isset($_GET['type']) && $_GET['type'] === 'email') ? 'selected' : '' ?>>Email</option>
+      <option value="sdt" <?= (isset($_GET['type']) && $_GET['type'] === 'sdt') ? 'selected' : '' ?>>SĐT</option>
+    </select>
+
+    <input type="text" name="keyword" class="form-control rounded-pill me-2"
+           placeholder="Nhập nội dung tìm kiếm"
+           style="height: 38px;"
+           value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
+
+    <button class="btn btn-primary rounded-pill me-2 px-3" type="submit">Tìm</button>
+    <a href="index.php?controller=employee&action=hienthiemployee" class="btn btn-secondary rounded-pill px-3">Tất cả</a>
   </div>
 </form>
+
 
     <table class="table table-bordered table-hover">
         <thead class="table-secondary">
@@ -45,7 +54,7 @@
                 </tr>
         <?php }
         } else { ?>
-            <tr><td colspan="5" class="text-center">Chưa có nhân viên nào</td></tr>
+            <tr><td colspan="5" class="text-center text-danger fw-bold py-3">Chưa có nhân viên nào</td></tr>
         <?php } ?>
         </tbody>
     </table>

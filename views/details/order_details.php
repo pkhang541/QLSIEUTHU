@@ -24,10 +24,11 @@
                     <thead class="table-primary text-center">
                         <tr>
                             <th style="width: 10%;">Mã SP</th>
-                            <th style="width: 35%;">Tên sản phẩm</th>
+                            <th style="width: 30%;">Tên sản phẩm</th>
                             <th style="width: 15%;">Số lượng</th>
                             <th style="width: 20%;">Giá bán</th>
-                            <th style="width: 20%;">Ghi chú</th>
+                            <th style="width: 15%;">Ghi chú</th>
+                            <th style="width: 20%;">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,6 +45,12 @@
                                         <?= !empty($row->ghichu) 
                                             ? htmlspecialchars($row->ghichu) 
                                             : '<span class="text-muted fst-italic">Không có</span>' ?>
+                                    </td>
+                                     <td class="text-center">
+                                        <a href="index.php?controller=details&action=edit&iddonhang=<?= urlencode($iddonhang) ?>&masp=<?= urlencode($row->masp) ?>"
+                                           class="btn btn-sm btn-outline-warning">
+                                            <i class="bi bi-pencil-square"></i> Sửa
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

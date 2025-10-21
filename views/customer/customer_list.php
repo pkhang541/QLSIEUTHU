@@ -1,20 +1,30 @@
 <div class="container-fluid my-4">
   <h3 class="mb-4">Danh sách khách hàng</h3>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Form tìm kiếm -->
+<a href="index.php?controller=customer&action=hienthiadd" class="btn btn-success mb-4">Thêm khách hàng</a>
 <form method="GET" action="index.php" class="mb-3">
   <input type="hidden" name="controller" value="customer">
   <input type="hidden" name="action" value="tim">
 
-  <div class="input-group" style="max-width: 400px;">
-    <input type="text" name="MAKH" class="form-control" placeholder="Nhập mã hoặc tên khách hàng"
-           value="<?= isset($_GET['MAKH']) ? htmlspecialchars($_GET['MAKH']) : '' ?>">
-    <button class="btn btn-primary" type="submit">Tìm</button>
+  <div class="input-group d-flex align-items-center" style="max-width: 480px;">
+    <select name="type" class="form-select rounded-pill me-2" style="max-width: 140px; height: 38px;">
+      <option value="ma" <?= (isset($_GET['type']) && $_GET['type'] === 'ma') ? 'selected' : '' ?>>Mã KH</option>
+      <option value="ten" <?= (!isset($_GET['type']) || $_GET['type'] === 'ten') ? 'selected' : '' ?>>Tên KH</option>
+      <option value="diachi" <?= (isset($_GET['type']) && $_GET['type'] == 'diachi') ? 'selected' : '' ?>>Địa chỉ</option>
+      <option value="sdt" <?= (isset($_GET['type']) && $_GET['type'] == 'sdt') ? 'selected' : '' ?>>Số ĐT</option>
+    </select>
+
+    <input type="text" name="keyword" class="form-control rounded-pill me-2" 
+           placeholder="Nhập nội dung tìm kiếm"
+           style="height: 38px;"
+           value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
+
+    <button class="btn btn-primary rounded-pill me-2 px-3" type="submit">Tìm</button>
+    <a href="index.php?controller=customer&action=hienthicustomer" class="btn btn-secondary rounded-pill px-3">Tất cả</a>
   </div>
 </form>
 
-  <a href="index.php?controller=customer&action=hienthiadd" class="btn btn-success mb-4">+ Thêm khách hàng</a>
-
+  
   <table class="table table-bordered table-hover">
     <thead class="table-secondary">
       <tr>
@@ -46,9 +56,9 @@
         <?php endforeach; ?>
       <?php else: ?>
         <tr>
-          <td colspan="7" class="text-center">Không có khách hàng nào.</td>
+          <td colspan="7" class="text-center text-danger fw-bold py-3">Không có khách hàng nào.</td>
         </tr>
       <?php endif; ?>
     </tbody>
   </table>
-</div>
+</div>  

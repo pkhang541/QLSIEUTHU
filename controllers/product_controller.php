@@ -136,19 +136,18 @@ public function edit()
     }
 public function tim()
 { 
-    if (isset($_GET['ID']) && !empty($_GET['ID'])) {
-        $keyword = trim($_GET['ID']);
-        $dsproduct = Product::tim($keyword);
+    $keyword = $_GET['keyword'] ?? '';
+    $type = $_GET['type'] ?? 'ten';
 
-        if (!empty($dsproduct)) {
-            $this->render('product_list', ['dsproduct' => $dsproduct]);
-        } else {
-            $this->render('baoloi', ['error' => 'Không tìm thấy sản phẩm nào!']);
-        }
+    if (!empty($keyword)) {
+        $dsproduct = Product::tim($keyword, $type);
+
+        $this->render('product_list', [
+            'dsproduct' => $dsproduct,
+        ]);
     } else {
         $this->hienthiproduct();
     }
 }
-
 }
 ?>

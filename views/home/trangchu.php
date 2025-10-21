@@ -69,6 +69,7 @@
       margin-bottom: 10px;
       font-size: 1rem;
     }
+    
   </style>
 </head>
 <body>

@@ -7,7 +7,7 @@
     echo '<div class="alert alert-danger">' . htmlspecialchars($error) . '</div>';
   } ?>
 
-  <form method="POST" action="index.php?controller=customer&action=sua">
+  <form method="POST" id="customerform" action="index.php?controller=customer&action=sua">
     <input type="hidden" name="MAKH" value="<?php echo isset($customer->makh) ? $customer->makh : ''; ?>">
 
     <div class="mb-3">
@@ -26,7 +26,7 @@
       <input type="text" id="SDT" name="SDT" class="form-control" required value="<?php echo isset($customer->sdt) ? htmlspecialchars($customer->sdt) : ''; ?>">
     </div>
 
-    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <button type="button" class="btn btn-success" onclick="kiemtraKH()">Cập nhật</button>
     <a href="index.php?controller=customer&action=hienthicustomer" class="btn btn-secondary">Hủy</a>
   </form>
 </div>

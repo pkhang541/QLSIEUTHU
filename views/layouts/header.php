@@ -244,17 +244,9 @@ function kiemtraDH() {
         alert("Vui lòng chọn trạng thái!");
         return false;
     }
-
-    var ngaydatDate = new Date(ngaydat);
-    var ngaylapDate = new Date(ngaylap);
-
-    if (ngaylapDate > ngaydatDate) {
-        alert("Ngày lập phải lớn hơn hoặc bằng ngày đặt!");
-        return false;
-    }
-
     orderform.submit();
   }
+
 function kiemtraNV() {
     var form  = document.getElementById('employeeform');
     var hoten = document.getElementById('HOTENNV');
@@ -280,6 +272,7 @@ function kiemtraNV() {
     // ✅ nếu hợp lệ thì submit
     form.submit();
 }
+
 function kiemtraKH() {
     var form  = document.getElementById('customerform');
     var tenkh = document.getElementById('TENKH');
