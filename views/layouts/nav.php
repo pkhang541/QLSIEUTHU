@@ -5,56 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siêu Thị Xanh</title>
 
-    <!-- Bootstrap CSS -->
+   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-      /* Navbar */
-      .navbar {
-        position: relative;
-        z-index: 2000; 
-      }
-
-      .dropdown-menu {
-        z-index: 2001;
-      }
-      .banner-container {
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 40px;
-        border-radius: 12px;
-      }
-
-      .banner-img {
-        width: 100%;
-        height: 320px;
-        object-fit: cover;
-        border-radius: 12px;
-      }
-
-      .banner-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.45);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: #fff;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        border-radius: 12px;
-        z-index: 1; /* Thấp hơn navbar */
-      }
-
-      .banner-container:hover .banner-overlay {
-        opacity: 1;
-      }
-    </style>
   </head>
   <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-success py-3">
@@ -75,7 +27,7 @@
             <a class="nav-link active" href="index.php">Trang chủ</a>
           </li>
 
-          <!-- Dropdown -->
+        
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="sanphamDropdown" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">

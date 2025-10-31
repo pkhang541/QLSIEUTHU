@@ -5,27 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Siêu Thị Xanh</title>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- AOS CSS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    
-    .navbar-custom {
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .navbar-custom .navbar-brand {
-      color: #2E7D32;
-      font-weight: bold;
-    }
-    .navbar-custom .nav-link {
-      color: #333;
-    }
-    .navbar-custom .nav-link:hover {
-      color: #2E7D32;
-    }
     .banner-container {
       position: relative;
       overflow: hidden;
@@ -74,7 +56,6 @@
 </head>
 <body>
 
-  <!-- Banner -->
   <div class="container-fluid p-0">
     <div class="banner-container">
       <img src="resources/images/banner.jpg" alt="Banner" class="banner-img" />
@@ -88,7 +69,6 @@
   </div>
   
 
-  <!-- Sản phẩm -->
 <div class="container mb-5">
   <h2 class="text-center text-success mb-4 fw-bold">Sản Phẩm Nổi Bật</h2>
   <div class="row g-4">
@@ -170,6 +150,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init({

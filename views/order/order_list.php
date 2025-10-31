@@ -1,5 +1,8 @@
 <h2 class="mb-4">Danh sách đơn hàng</h2>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  </script>
+
 <div class="mb-3">
     <a href="index.php?controller=order&action=hienthiadd" class="btn btn-success">
         <i class="bi bi-plus-lg"></i> Thêm đơn hàng
@@ -56,7 +59,7 @@
                         <td><?= $o->hotennv ?></td>
                         <td><?= $o->tenkh ?></td>
                         <td>
-                            <span class="badge <?= strtolower($o->trangthai) == 'hết hàng' ? 'bg-warning' : 'bg-success' ?>">
+                            <span class="badge <?= strtolower($o->trangthai) == 'đã hủy' ? 'bg-warning' : 'bg-success' ?>">
                              <?= htmlspecialchars($o->trangthai) ?>
                             </span>
 

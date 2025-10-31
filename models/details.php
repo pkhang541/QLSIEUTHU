@@ -98,6 +98,7 @@ public static function getByOrderId($orderId) {
         $stmt = $db->prepare($sql);
         return $stmt->execute([':iddonhang' => $iddonhang]);
     }
+    
     public static function updateByOrderAndProduct($iddonhang, $masp, $soluong, $giaban, $ghichu) {
     $db = DB::getInstance();
     $sql = "UPDATE chitietdonhang

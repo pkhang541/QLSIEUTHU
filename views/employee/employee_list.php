@@ -1,3 +1,4 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <div class="container mt-4">
     <h2>Danh sách nhân viên</h2>
     <a href="index.php?controller=employee&action=hienthiadd" class="btn btn-success mb-3"> Thêm nhân viên</a>
@@ -26,7 +27,7 @@
 
 
     <table class="table table-bordered table-hover">
-        <thead class="table-secondary">
+        <thead class="table-dark">
             <tr>
                 <th>Mã NV</th>
                 <th>Họ tên</th>             

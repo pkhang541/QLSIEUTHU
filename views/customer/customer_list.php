@@ -1,37 +1,42 @@
-<div class="container-fluid my-4">
-  <h3 class="mb-4">Danh sách khách hàng</h3>
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<a href="index.php?controller=customer&action=hienthiadd" class="btn btn-success mb-4">Thêm khách hàng</a>
-<form method="GET" action="index.php" class="mb-3">
-  <input type="hidden" name="controller" value="customer">
-  <input type="hidden" name="action" value="tim">
 
-  <div class="input-group d-flex align-items-center" style="max-width: 480px;">
-    <select name="type" class="form-select rounded-pill me-2" style="max-width: 140px; height: 38px;">
-      <option value="ma" <?= (isset($_GET['type']) && $_GET['type'] === 'ma') ? 'selected' : '' ?>>Mã KH</option>
-      <option value="ten" <?= (!isset($_GET['type']) || $_GET['type'] === 'ten') ? 'selected' : '' ?>>Tên KH</option>
-      <option value="diachi" <?= (isset($_GET['type']) && $_GET['type'] == 'diachi') ? 'selected' : '' ?>>Địa chỉ</option>
-      <option value="sdt" <?= (isset($_GET['type']) && $_GET['type'] == 'sdt') ? 'selected' : '' ?>>Số ĐT</option>
-    </select>
+<div class="container mt-4">
+  <h2 class="mb-3">Danh sách khách hàng</h2>
+  <a href="index.php?controller=customer&action=hienthiadd" class="btn btn-success mb-3">
+    Thêm khách hàng
+  </a>
 
-    <input type="text" name="keyword" class="form-control rounded-pill me-2" 
-           placeholder="Nhập nội dung tìm kiếm"
-           style="height: 38px;"
-           value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
+  <form method="GET" action="index.php" class="mb-3">
+    <input type="hidden" name="controller" value="customer">
+    <input type="hidden" name="action" value="tim">
 
-    <button class="btn btn-primary rounded-pill me-2 px-3" type="submit">Tìm</button>
-    <a href="index.php?controller=customer&action=hienthicustomer" class="btn btn-secondary rounded-pill px-3">Tất cả</a>
-  </div>
-</form>
+    <div class="input-group d-flex align-items-center" style="max-width: 500px;">
+      <select name="type" class="form-select rounded-pill me-2" style="max-width: 140px; height: 38px;">
+        <option value="ma" <?= (isset($_GET['type']) && $_GET['type'] === 'ma') ? 'selected' : '' ?>>Mã KH</option>
+        <option value="ten" <?= (!isset($_GET['type']) || $_GET['type'] === 'ten') ? 'selected' : '' ?>>Tên KH</option>
+        <option value="diachi" <?= (isset($_GET['type']) && $_GET['type'] == 'diachi') ? 'selected' : '' ?>>Địa chỉ</option>
+        <option value="sdt" <?= (isset($_GET['type']) && $_GET['type'] == 'sdt') ? 'selected' : '' ?>>Số ĐT</option>
+      </select>
 
-  
+      <input type="text" name="keyword" class="form-control rounded-pill me-2"
+             placeholder="Nhập nội dung tìm kiếm"
+             style="height: 38px;"
+             value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
+
+      <button class="btn btn-primary rounded-pill me-2 px-3" type="submit">Tìm</button>
+      <a href="index.php?controller=customer&action=hienthicustomer" class="btn btn-secondary rounded-pill px-3">Tất cả</a>
+    </div>
+  </form>
+
   <table class="table table-bordered table-hover">
-    <thead class="table-secondary">
+    <thead class="table-dark">
       <tr>
-        <th>ID</th>
+        <th>Mã KH</th>
         <th>Tên khách hàng</th>
         <th>Địa chỉ</th>
-        <th>SĐT</th>
+        <th>Số điện thoại</th>
         <th>Thao tác</th>
       </tr>
     </thead>
@@ -40,25 +45,28 @@
         <?php foreach ($dscustomer as $customer): ?>
           <tr>
             <td><?= $customer->makh; ?></td>
-            <td><?= $customer->tenkh; ?></td>
-            <td><?= $customer->diachi; ?></td>
-            <td><?= $customer->sdt; ?></td>
-            <td>  
-            <a href="index.php?controller=customer&action=sua&MAKH=<?= $customer->makh; ?>" class="btn btn-primary btn-sm">Sửa</a>
-            <a href="index.php?controller=customer&action=xoa&MAKH=<?= $customer->makh; ?>" 
-            class="btn btn-danger btn-sm"
-            onclick="return confirm('Bạn có chắc muốn xóa khách hàng này?');">
-            <i class="fa-solid fa-trash-can me-1"></i> Xóa
-            </a>
-           
-          </td>
+            <td><?= htmlspecialchars($customer->tenkh); ?></td>
+            <td><?= htmlspecialchars($customer->diachi); ?></td>
+            <td><?= htmlspecialchars($customer->sdt); ?></td>
+            <td>
+              <a href="index.php?controller=customer&action=sua&MAKH=<?= $customer->makh; ?>" class="btn btn-primary btn-sm">
+                Sửa
+              </a>
+              <a href="index.php?controller=customer&action=xoa&MAKH=<?= $customer->makh; ?>"
+                 class="btn btn-danger btn-sm"
+                 onclick="return confirm('Bạn có chắc muốn xóa khách hàng này?');">
+                 <i class="fa-solid fa-trash-can me-1"></i> Xóa
+              </a>
+            </td>
           </tr>
         <?php endforeach; ?>
       <?php else: ?>
         <tr>
-          <td colspan="7" class="text-center text-danger fw-bold py-3">Không có khách hàng nào.</td>
+          <td colspan="5" class="text-center text-danger fw-bold py-3">
+            Không có khách hàng nào.
+          </td>
         </tr>
       <?php endif; ?>
     </tbody>
   </table>
-</div>  
+</div>

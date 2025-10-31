@@ -1,3 +1,4 @@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <div class="container mt-4">
     <h2 class="mb-3">✏️ Sửa chi tiết đơn hàng #<?= htmlspecialchars($iddonhang) ?></h2>
 

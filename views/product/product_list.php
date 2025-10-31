@@ -26,7 +26,7 @@
 
   <?php if (!empty($dsproduct)) : ?>
     <table class="table table-bordered table-hover">
-      <thead class="table-secondary text-center">
+      <thead class="table-dark text-center">
         <tr>
           <th>ID</th> 
           <th>Tên sản phẩm</th> 

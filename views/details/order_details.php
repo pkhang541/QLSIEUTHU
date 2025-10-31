@@ -1,24 +1,22 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     
 <div class="container my-5">
     <div class="card shadow-lg rounded-3 border-0">
-        <!-- Header -->
         <div class="card-header text-white bg-gradient" style="background: linear-gradient(90deg, #0062E6, #33AEFF);">
             <h4 class="mb-0">
                 <i class="bi bi-receipt-cutoff me-2"></i> Chi tiết đơn hàng
             </h4>
         </div>
 
-        <!-- Body -->
         <div class="card-body p-4">
-            <!-- Nút quay lại + thêm -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="index.php?controller=order&action=hienthiorder" class="btn btn-outline-primary">
                     <i class="bi bi-arrow-left me-1"></i> Quay lại danh sách
                 </a>
             </div>
 
-            <!-- Bảng -->
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover align-middle mb-0 shadow-sm">
                     <thead class="table-primary text-center">
@@ -51,6 +49,11 @@
                                            class="btn btn-sm btn-outline-warning">
                                             <i class="bi bi-pencil-square"></i> Sửa
                                         </a>
+                                        <a href="index.php?controller=details&action=delete&iddonhang=<?= urlencode($iddonhang) ?>&masp=<?= urlencode($row->masp) ?>"
+                                            class="btn btn-sm btn-outline-danger"
+                                                 onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này khỏi đơn hàng không?')">
+                                                <i class="bi bi-trash"></i> Xóa
+    </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

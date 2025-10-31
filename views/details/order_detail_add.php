@@ -1,3 +1,5 @@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <form method="POST" id="detailsForm" action="index.php?controller=details&action=add">
     <input type="hidden" name="IDDONHANG" value="<?= $iddonhang ?>">
 
@@ -12,10 +14,10 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <input type="number" name="PRODUCTS[0][SOLUONG]" class="form-control" min="1">
+                <input type="number" name="PRODUCTS[0][SOLUONG]" class="form-control" min="1" placeholder="Số lượng">
             </div>
             <div class="col-md-2">
-                <input type="number" name="PRODUCTS[0][GIABAN]" class="form-control" min="0">
+                <input type="number" name="PRODUCTS[0][GIABAN]" class="form-control" min="0" placeholder="Giá bán">
             </div>
             <div class="col-md-3">
                 <input type="text" name="PRODUCTS[0][GHICHU]" class="form-control" placeholder="Ghi chú">

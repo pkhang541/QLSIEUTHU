@@ -121,7 +121,6 @@ public static function tim($keyword, $type)
             break;
 
         default:
-            // nếu không chọn gì thì tìm gần đúng theo tên
             $sql = "SELECT * FROM khachhang WHERE TENKH LIKE :kw";
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':kw', '%' . $keyword . '%', PDO::PARAM_STR);
